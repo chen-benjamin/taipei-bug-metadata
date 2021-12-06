@@ -75,7 +75,8 @@ class MetadataController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Metadata::find($id + 1)->metadata);
+        $meta = Metadata::find($id + 1);
+        return response()->json($meta ? $meta->metadata : $meta);
     }
 
     /**
