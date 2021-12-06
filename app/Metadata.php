@@ -12,6 +12,6 @@ class Metadata extends Model
      * @var array
      */
     protected $fillable = [
-        'metadata'
+        'id', 'metadata'
     ];
 }

@@ -53,6 +53,10 @@ class MetadataController extends Controller
             $metas = [];
             foreach ($meta as $key => $value) {
                 $m = Metadata::find($key + 1);
+                if (!$m) {
+                    $m = new Metadata;
+                    $m->id = $key + 1;
+                }
                 $m->metadata = json_encode($value);
                 $m->save();
             }
