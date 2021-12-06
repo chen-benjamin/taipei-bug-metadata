@@ -20,7 +20,7 @@ class MetadataController extends Controller
      */
     public function index()
     {
-        $metadatas = DB::table('metadata')->paginate(1);
+        $metadatas = DB::table('metadata')->paginate(10);
         return view('metadata.index', ['metadatas' => $metadatas]);
     }
 
@@ -50,15 +50,13 @@ class MetadataController extends Controller
         }
 
         try {
-            if (is_array($meta)) {
-                foreach ($meta as &$value) {
-                    $value = ['metadata' =>  json_encode($value)];
-                }
-                unset($value);
-                Metadata::insert($meta);
-            } else {
-                Metadata::create(['metadata' => json_encode($meta)]);
+            $metas = [];
+            foreach ($meta as $key => $value) {
+                $m = Metadata::find($key + 1);
+                $m->metadata = json_encode($value);
+                $m->save();
             }
+
         } catch (\Exception $e) {
             \Log::warning($e);
             return back()->with('error', 'Metadata create failed!');
