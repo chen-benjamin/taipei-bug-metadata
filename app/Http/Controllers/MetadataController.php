@@ -57,7 +57,7 @@ class MetadataController extends Controller
                     $m = new Metadata;
                     $m->id = $key + 1;
                 }
-                $m->metadata = json_encode($value);
+                $m->metadata = json_encode($value, JSON_UNESCAPED_SLASHES);
                 $m->save();
             }
 
@@ -78,7 +78,7 @@ class MetadataController extends Controller
     public function show($id)
     {
         $meta = Metadata::find($id + 1);
-        return response()->json($meta ? $meta->metadata : $meta);
+        return response($meta ? $meta->metadata : $meta)->header('Content-Type', 'application/json');
     }
 
     /**
